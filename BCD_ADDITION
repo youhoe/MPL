@@ -1,0 +1,27 @@
+DATA_SEG SEGMENT
+	 NUM1 DW 1234H
+	 NUM2 DW 5678H
+	 SUM DW 00H
+DATA_SEG ENDS
+
+CODE_SEG SEGMENT
+	 ASSUME CS:CODE_SEG, DS:DATA_SEG
+
+START: MOV AX, DATA_SEG
+	 MOV DS, AX 	;initialise data segment
+
+	 MOV AX,NUM1 	;get first number
+	 MOV BX,NUM2	;get second number
+	 ADD AL,BL 	;add lower bytes
+	 DAA 		;adjust sum to BCD
+ 	 MOV CL,AL 	;store the lower byte sum
+	 MOV AL,AH 	;move higher byte of NUM1 to AL
+ 	 ADC AL,BH  	;add higher bytes with carry
+ 	 DAA 		;adjust sum to BCD
+ 	 MOV CH,AL 	;store higher byte of sum
+ 	 MOV SUM,CX  	;store the sum
+
+ 	 MOV AH, 4CH    ;exit to DOS
+ 	 INT 21H
+CODE_SEG ENDS
+END START
