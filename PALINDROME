@@ -1,0 +1,38 @@
+DATA_SEG SEGMENT
+         ARRY1 DB 'abcba'
+         LEN DW 5
+         PALINDROME DB ?
+DATA_SEG ENDS
+
+CODE_SEG SEGMENT
+	ASSUME CS:CODE_SEG, DS:DATA_SEG
+
+START:   MOV AX, DATA_SEG        ;initialise data segment
+	 MOV DS, AX
+
+	 MOV SI, OFFSET ARRY1
+         MOV DI, SI
+         MOV BX, LEN
+	 DEC BX
+         ADD DI, BX
+
+AGAIN:   MOV AL, [SI]            ;read character pointed by the start pointer
+	 CMP AL, [DI]            ;compare characters pointed by start and end pointer
+
+	JNZ NO_PALI             ;string is not palindrome
+	INC SI
+	DEC DI
+	
+	CMP SI, DI
+	JNC AGAIN
+	
+	MOV PALINDROME, 0FFH
+	JMP EXIT
+
+NO_PALI: MOV PALINDROME, 00H
+
+EXIT:    MOV AH, 4CH             ;exit to DOS
+	INT 21H
+	
+CODE_SEG ENDS
+END START
