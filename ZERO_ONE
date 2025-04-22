@@ -1,0 +1,28 @@
+DATA_SEG SEGMENT
+         NUM1 DB 26H
+         ONES_NUM DB 0H
+         ZEROS_NUM DB 0H
+DATA_SEG ENDS
+
+CODE_SEG SEGMENT
+	ASSUME CS:CODE_SEG, DS:DATA_SEG
+
+START:  MOV AX, DATA_SEG        ;initialise data segment
+	MOV DS , AX
+
+	MOV AL, NUM1            ;number gets moved to AL
+	MOV CX, 8H 		;set counter to 8
+
+BACK:   ROR AL,1
+	JC carry1
+	INC ZEROS_NUM
+	JMP EXIT
+
+carry1: INC ONES_NUM
+EXIT:   LOOP BACK
+	
+	MOV AH, 4CH             ;exit to DOS
+	INT 21H
+
+CODE_SEG ENDS
+END START
