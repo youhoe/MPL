@@ -1,0 +1,32 @@
+.model small
+.stack 100h
+.data
+ num dw 05h
+.code
+main proc
+ mov ax, @data
+ mov ds, ax
+ mov ax, 01
+ mov bx, num
+ call fact
+ mov di, ax
+ mov bx, dx
+ mov bx, di
+ mov ah, 4Ch
+ int 21h
+main endp
+SE - IT / S22 / 108
+fact proc near
+ cmp bx, 01
+ jz l1
+l2:
+ mul bx
+ dec bx
+ cmp bx, 01
+ jne l2
+ ret
+l1:
+ mov ax, 01
+ ret
+fact endp
+end main
