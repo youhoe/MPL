@@ -1,0 +1,30 @@
+DATA_SEG SEGMENT
+         ARR1 DB 26H, 11H, 22H, 33H, 44H, 55H, 2H, 4H, 6H, 8H
+         EVEN_NO DB 0
+         ODD_NO DB 0
+DATA_SEG ENDS
+
+CODE_SEG SEGMENT
+	ASSUME CS:CODE_SEG, DS:DATA_SEG
+
+START:  MOV AX, DATA_SEG        ;initialise data segment
+	MOV DS, AX
+
+	MOV SI, OFFSET ARR1     ;initialise the pointer
+	MOV CX, 10 		;initialise the counter
+
+AGAIN:  MOV AL, [SI]            ;read the element
+	ROR AL, 1 		;rotates the LSB to the carry flag
+	JC SKIP
+	INC EVEN_NO
+	JMP NEXT
+
+SKIP:   INC ODD_NO
+
+NEXT:   INC SI
+	LOOP AGAIN
+
+	MOV AH, 4CH             ;exit to DOS
+	INT 21H
+CODE_SEG ENDS
+END START
