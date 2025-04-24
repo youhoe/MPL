@@ -15,7 +15,6 @@ main endp
 palindrome proc
  mov si, offset string
 loop1:
-SE - IT / S22 /108
  mov al, [si]
  cmp al, '$'
  je label1
@@ -44,6 +43,5 @@ output2:
  mov ah, 09h
  int 21h
  ret
-SE - IT / S22 /108
 palindrome endp
 end main
